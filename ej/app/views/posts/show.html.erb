@@ -93,7 +93,7 @@
     <p>Take notes on this post here. Only you can see your notes.</p>
     <% if @post.notes.where(:user_id => current_user.id).exists? %>
           <%=form_for(@post.notes.where(:user_id => current_user.id).first) do |f|%>
-            <%=f.text_area :content %>
+            <%=f.text_area :content %><br>
             <%=f.submit "Save Note" %>
           <%end%>
       <%else%>

@@ -1,3 +1,13 @@
+<script>
+jQuery(document).ready(function(){
+        $("#group2assign").hide();
+        jQuery('#group2Exists').on('click', function(event) {        
+             jQuery('#group2assign').toggle('show');
+        });
+    });
+</script>
+
+
 <%= form_for(@assignment) do |f| %>
   <% if @assignment.errors.any? %>
     <div id="error_explanation">
@@ -13,8 +23,25 @@
   
   <%= f.label :title%>
   <%= f.text_field :title%><br>
-  <%= f.label :description%>
-  <%= f.cktext_area :description %><br>
+  <div class="row">
+    <div class="col-md-6">
+      <b>Group 1 Assignment</b><br>
+      <%= f.label :description %>
+      <%= f.cktext_area :description %><br>
+    </div>
+    <div class="col-md-6">
+      <label id="group2ExistsLabel">
+        Group 2 Assignment? 
+        <input type="checkbox" path="group2Exists" id="group2Exists" value=""></input>
+      </label>
+      <br>
+      <div id="group2assign">
+        <%= f.label :description2%>
+        <!-- place group 2's text editor and comment form here! -->
+      </div>
+    </div>
+  </div>
+  <div align="center">
   <%= f.label :draft_deadline%>
   <%= f.datetime_select(:draft_deadline, ampm: true)%><br><br>
   <%= f.label :comment_deadline%>
@@ -37,4 +64,5 @@
   <div class="actions">
     <%= f.submit %>
   </div>
+</div>
 <% end %>
