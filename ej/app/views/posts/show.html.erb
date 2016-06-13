@@ -3,88 +3,98 @@
 <div class="page-header">
   <h1><%= @post.headline %><small>                  by: <%= @post.user.name %></small></h1>
 </div>
-<h4>Position: <% if @post.position.nil? %>
-            No position for this assignment
-            <% else %>
-            <%= @post.position.title %>
-            <% end %></h4>
-<br>
-<h4>First Draft</h4>
-<div class="well well-lg">
-    <%= @post.draft1.html_safe %>
-</div>
-<% if @post.draft2 != nil && @post.draft2.length > 0 %>
-    <h4>Final Draft</h4>
-    <div class="well well-lg">
-        <%= @post.draft2.html_safe %>
-    </div>
-<% end %>
-
-<div align="right">
-  <% if current_user.admin %>
-  	<% if !@post.bookmarked %>
-  	  <%= button_to 'Bookmark', flop_post_path(id: @post.id) %>
-  	<% else %>
-  	  <%= button_to 'Bookmarked', flop_post_path(id: @post.id) %>
-  	<% end %>
-  <%end%>
-  
-  
-  <% if @post.likes.count != nil %>
-    <h4>Likes: <%= @post.likes.count %></h4>
-  <% end %>
-  <% unless @post.user == current_user %>
-  <% if Like.where(post_id: @post.id, user_id: current_user.id).exists? %>
-    <% @like = Like.where(post_id: @post.id, user_id: current_user.id).first %>
-    <%= button_to 'Unlike', @like, method: :delete%>
-  <% else %>
-    <%=form_for(Like.new) do |f|%>
-      <%=f.hidden_field :user_id, value: current_user.id%>
-      <%=f.hidden_field :post_id, value: @post.id%>
-      <%= f.submit 'Like' %>
-    <% end %>
-    <% end %>
-  <% end %>
-</div>
+<!-- Positions removed -->
 
 <div class="row">
-  <div class="col-sm-8">
-  	
-<h4>Comments</h4>
-
-<table class="table table-bordered">
-	<%@comments = @post.comments.order('created_at ASC')%>
-	<%@comments.each do |c|%>
-		<tr>
-			<td width="80%"><%=c.content.html_safe%></td>
-			<td width="20%" align="right">Commenter: <%=c.user.name%></td>
-		</tr>
-	<%end%>
-</table>
-  		<!-- create new comment -->
-		<%=form_for(Comment.new) do |f|%>
-			<%=f.label :content, 'Add a Comment'%><br>
-			<%=f.text_area :content, :cols => "90" %><br>
-			<%=f.hidden_field :user_id, value: current_user.id%>
-			<%=f.hidden_field :post_id, value: @post.id%>
-			<%=f.submit "Save Comment"%>
-		<%end%>
+  <div class="col-md-9" id="mainPost" data-target="#myScrollspy">
+  <br>
+  <h4 id="firstDraft">First Draft</h4>
+  <div class="well well-lg">
+     <%= @post.draft1.html_safe %>
   </div>
-  <div class="col-sm-4">
-  	<br><br>
-  		<% if @post.notes.where(:user_id => current_user.id).exists? %>
-		   <%=form_for(@post.notes.where(:user_id => current_user.id).first) do |f|%>
-			<%=f.text_area :content %>
-			<%=f.submit "Save Note" %>
-		  <%end%>
-		<%else%>
-		  <%=form_for(Note.new) do |f|%>
-			<%=f.text_area :content %>
-			<%=f.hidden_field :user_id, value: current_user.id %>
-			<%=f.hidden_field :post_id, value: @post.id %><br>
-			<%=f.submit "Save Note" %>
-		  <%end%>
-		<% end %>
+
+  <div class="row">
+    <div class="col-sm-8">
+    
+      <h4 id="comments">Comments</h4>
+
+      <table class="table table-bordered">
+        <%@comments = @post.comments.order('created_at ASC')%>
+        <%@comments.each do |c|%>
+          <tr>
+            <td width="80%"><%=c.content.html_safe%></td>
+            <td width="20%" align="right">Commenter: <%=c.user.name%></td>
+          </tr>
+        <%end%>
+      </table>
+      <!-- create new comment -->
+      <%=form_for(Comment.new) do |f|%>
+        <%=f.label :content, 'Add a Comment'%><br>
+        <%=f.text_area :content, :cols => "90" %><br>
+        <%=f.hidden_field :user_id, value: current_user.id%>
+        <%=f.hidden_field :post_id, value: @post.id%>
+        <%=f.submit "Save Comment"%>
+      <%end%>
+    </div>
+  </div>
+  <br><br>
+  <% if @post.draft2 != nil && @post.draft2.length > 0 %>
+    <h4 id="finalDraft">Final Draft</h4>
+    <div class="well well-lg">
+      <%= @post.draft2.html_safe %>
+    </div>
+  <% end %>
+
+  <div align="right">
+    
   </div>
 </div>
 
+<nav class="col-sm-3" id="myScrollspy" >
+  <div data-spy="affix">
+    <div class="row" id="postNavButtons">
+      <div class="col-md-4">
+        <a href="#firstDraft" class="btn btn-default">First Draft</a>
+      </div>
+      <div class="col-md-4">
+        <a href="#comments" class="btn btn-default">Comments</a>
+      </div>
+      <div class="col-md-4">
+        <a href="#finalDraft" class="btn btn-default">Final Draft</a>
+      </div>
+    </div>
+    <br>
+    <% if @post.likes.count != nil %>
+      <h4>Likes: <%= @post.likes.count %></h4>
+    <% end %>
+    <% unless @post.user == current_user %>
+      <% if Like.where(post_id: @post.id, user_id: current_user.id).exists? %>
+        <% @like = Like.where(post_id: @post.id, user_id: current_user.id).first %>
+        <%= button_to 'Unlike', @like, method: :delete%>
+      <% else %>
+        <%=form_for(Like.new) do |f|%>
+          <%=f.hidden_field :user_id, value: current_user.id%>
+          <%=f.hidden_field :post_id, value: @post.id%>
+          <%= f.submit 'Like' %>
+        <% end %>
+      <% end %>
+    <% end %>
+    <br>
+    <h4>Notes</h4>
+    <p>Take notes on this post here. Only you can see your notes.</p>
+    <% if @post.notes.where(:user_id => current_user.id).exists? %>
+          <%=form_for(@post.notes.where(:user_id => current_user.id).first) do |f|%>
+            <%=f.text_area :content %>
+            <%=f.submit "Save Note" %>
+          <%end%>
+      <%else%>
+        <%=form_for(Note.new) do |f|%>
+          <%=f.text_area :content %>
+          <%=f.hidden_field :user_id, value: current_user.id %>
+          <%=f.hidden_field :post_id, value: @post.id %><br>
+          <%=f.submit "Save Note" %>
+        <%end%>
+      <% end %>
+    </div>
+</nav>
+</div>

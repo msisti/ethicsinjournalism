@@ -52,7 +52,8 @@
     <% else %>
       <% @post.submitted = true %>
       <% if @post.draft2 == nil %>
-        <% @post.draft2 = @post.draft1 %>
+        <!-- <% @post.draft2 = @post.draft1 %> -->
+        <% @post.draft2 = "" %>
       <% end %>
       <div class="well well-lg">
         <% if @post.draft1.nil? %>

@@ -59,7 +59,8 @@ class PostsController < ApplicationController
    
     if params[:commit] == 'Submit Post To Class'
       @post.submitted = true
-      @post.draft2 = @post.draft1
+      #@post.draft2 = @post.draft1
+      @post.draft2 = ""
     else 
       @post.submitted = false
     end
@@ -81,7 +82,8 @@ class PostsController < ApplicationController
 
     if params[:commit] == 'Submit Post To Class' 
       @post.submitted = true
-      @post.draft2 = @post.draft1
+      #@post.draft2 = @post.draft1
+      @post.draft2 = ""
     end
    
 
