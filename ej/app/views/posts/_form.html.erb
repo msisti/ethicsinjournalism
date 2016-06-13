@@ -25,6 +25,7 @@
   <%= f.label :headline %>
   <%= f.text_field :headline %><br>
  
+  <!-- Don't need this anymore, no positions will be used!
     <% if @assignment.positions.count == 1 %>
       <%=f.hidden_field :position_id, value: @assignment.positions.first %>
       <% elsif @assignment.positions.count == 0 %>
@@ -37,6 +38,7 @@
         <h4>Your position is: <%= @post.position.title%></h4>
       <% end %>
     <% end %>
+    -->
     
   <br>
   <br>
