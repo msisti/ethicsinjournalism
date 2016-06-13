@@ -20,7 +20,7 @@
   <%= f.label :final_deadline%>
   <%= f.datetime_select(:final_deadline, ampm: true)%><br>
   
-  <%= f.nested_fields_for :positions do |positions_form| %>
+  <!-- <%= f.nested_fields_for :positions do |positions_form| %>
     <h4>Position:</h4>
       <%= positions_form.label :title %>
       <%= positions_form.text_field :title %>
@@ -28,7 +28,8 @@
     <br>
   <% end %>
   <br>
-  <%= f.add_nested_fields_link :positions, 'Add Another Position', class: 'btn btn-primary', role: 'button' %>
+  <%= f.add_nested_fields_link :positions, 'Add Another Position', class: 'btn btn-primary', role: 'button' %> -->
+  
   <br>  
   <br>
   <div class="actions">

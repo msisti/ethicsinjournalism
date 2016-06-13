@@ -12,11 +12,11 @@
     <% @posts.each do |post| %>
       <tr>
         <td>
-          <h4><b><u><%= 'Headline:'%></u></b> <%= post.headline %>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<b><u><%= 'Position:'%></b></u> <% if post.position.nil? %>
+          <h4><b><u><%= 'Headline:'%></u></b> <%= post.headline %>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <!--<b><u><%= 'Position:'%></b></u> <% if post.position.nil? %>
             No position for this assignment
             <% else %>
             <%= post.position.title %>
-            <% end %>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<%= if post.submitted then 'Submitted' end %>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<%= link_to 'Go to Post', post, class:'btn btn-default btn-sm' %></h4>
+            <% end %>-->&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<%= if post.submitted then 'Submitted' end %>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<%= link_to 'Go to Post', post, class:'btn btn-default btn-sm' %></h4>
           <h4>First Draft</h4>
           <div class="well well-lg">
             <%= post.draft1.html_safe %>

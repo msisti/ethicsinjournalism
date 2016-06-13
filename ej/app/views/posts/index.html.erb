@@ -36,11 +36,18 @@ jQuery(document).ready(function(){
             <td><%= link_to 'Go to Post', post, class:'btn btn-default btn-sm' %></td>
             <% if post.notes.where(:user_id => current_user.id).exists? %>
               <td><div id='content'><%= post.notes.where(:user_id => current_user.id).first.content %></div>
-              <input type='button' id='hideshow' value='Hide / Show'>
+              <input type='button' id='hideshow' value='Hide / Show' class="btn btn-default btn-sm">
             <% end %>
           </tr>
         <% else %>
-          <% if @assignment.positions.count == 1 || @assignment.positions.count == 0 %>
+          <tr>
+            <td><h4><%= post.headline %></h4></td>
+            <td><%= post.user.name %></td>
+            <td><%= link_to 'Go to Post', post, class:'btn btn-default btn-sm' %></td>
+          </tr>
+
+
+          <!-- <% if @assignment.positions.count == 1 || @assignment.positions.count == 0 %>
             <tr>
             <td><%= post.headline %></td>
             <td><%= post.user.name %></td>
@@ -62,7 +69,7 @@ jQuery(document).ready(function(){
             <% end %>
             <td><%= link_to 'Go to Post', post, class:'btn btn-default btn-sm' %></td>
           </tr>
-          <% end %>
+          <% end %> -->
         <% end %>
       <% end %>
     <% end %>
