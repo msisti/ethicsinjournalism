@@ -87,19 +87,28 @@
   <% end %>
 
  <br>
-
- <% if Time.zone.now > @post.assignment.draft_deadline %>
- <h5>Draft Deadline has passed</h5>
- <% elsif !@post.submitted %>
-  <%= "Time Until Draft Deadline: " + Time.diff(Time.zone.now, @post.assignment.draft_deadline)[:diff] + "\n" %>
-  <br>
+ <div class="alert alert-warning" role="alert">
+  <% if Time.zone.now > @post.assignment.draft_deadline %>
+    <h5>Draft Deadline has passed</h5>
+  <% elsif !@post.submitted %>
+    <%= "Time Until Draft Deadline: " + Time.diff(Time.zone.now, @post.assignment.draft_deadline)[:diff] + "\n" %>
+    <br>
   <% end %>
+
+  <%if Time.now > @post.assignment.comment_deadline %>
+    <h5>Comment Deadline has passed</h5>
+  <% else %>
+    <%= "Time Until Comment Deadline: " + Time.diff(Time.zone.now, @post.assignment.comment_deadline)[:diff] + "\n" %>
+    <br>
+  <% end %>
+
   <%if Time.now > @post.assignment.final_deadline %>
     <h5>Final Deadline has passed</h5>
-    <% else %>
-      <%= "Time Until Final Deadline: " + Time.diff(Time.zone.now, @post.assignment.final_deadline)[:diff] + "\n" %>
+  <% else %>
+    <%= "Time Until Final Deadline: " + Time.diff(Time.zone.now, @post.assignment.final_deadline)[:diff] + "\n" %>
   <% end %>
 <% end %>
+</div>
  </td>
  <td>
    <div>

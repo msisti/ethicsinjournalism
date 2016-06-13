@@ -16,7 +16,9 @@
   <%= f.label :description%>
   <%= f.cktext_area :description %><br>
   <%= f.label :draft_deadline%>
-  <%= f.datetime_select(:draft_deadline, ampm: true)%><br>
+  <%= f.datetime_select(:draft_deadline, ampm: true)%><br><br>
+  <%= f.label :comment_deadline%>
+  <%= f.datetime_select(:comment_deadline, ampm: true)%><br><br>
   <%= f.label :final_deadline%>
   <%= f.datetime_select(:final_deadline, ampm: true)%><br>
   

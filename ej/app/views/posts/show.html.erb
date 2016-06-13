@@ -17,7 +17,14 @@
     <div class="col-sm-8">
     
       <h4 id="comments">Comments</h4>
-
+      <div class="alert alert-warning" role="alert">
+        <%if Time.now > @post.assignment.comment_deadline %>
+          The Commenting Deadline has passed.
+        <% else %>
+          <%= "Time Until Comment Deadline: " + Time.diff(Time.zone.now, @post.assignment.comment_deadline)[:diff] + "\n" %>
+          <br>
+        <% end %>
+      </div>
       <table class="table table-bordered">
         <%@comments = @post.comments.order('created_at ASC')%>
         <%@comments.each do |c|%>
@@ -28,13 +35,15 @@
         <%end%>
       </table>
       <!-- create new comment -->
-      <%=form_for(Comment.new) do |f|%>
-        <%=f.label :content, 'Add a Comment'%><br>
-        <%=f.text_area :content, :cols => "90" %><br>
-        <%=f.hidden_field :user_id, value: current_user.id%>
-        <%=f.hidden_field :post_id, value: @post.id%>
-        <%=f.submit "Save Comment"%>
-      <%end%>
+      <% if Time.now <= @post.assignment.comment_deadline || current_user.admin? %>
+        <%=form_for(Comment.new) do |f|%>
+          <%=f.label :content, 'Add a Comment'%><br>
+          <%=f.text_area :content, :cols => "90" %><br>
+          <%=f.hidden_field :user_id, value: current_user.id%>
+          <%=f.hidden_field :post_id, value: @post.id%>
+          <%=f.submit "Save Comment"%>
+        <%end%>
+      <% end %>
     </div>
   </div>
   <br><br>

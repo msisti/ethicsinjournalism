@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160114192816) do
+ActiveRecord::Schema.define(version: 20160613174803) do
 
   create_table "ahoy_events", force: :cascade do |t|
     t.uuid     "visit_id",   limit: 16
@@ -26,12 +26,13 @@ ActiveRecord::Schema.define(version: 20160114192816) do
   add_index "ahoy_events", ["visit_id"], name: "index_ahoy_events_on_visit_id", using: :btree
 
   create_table "assignments", force: :cascade do |t|
-    t.string   "title",          limit: 255
-    t.text     "description",    limit: 65535
+    t.string   "title",            limit: 255
+    t.text     "description",      limit: 65535
     t.datetime "draft_deadline"
     t.datetime "final_deadline"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.datetime "comment_deadline"
   end
 
   create_table "ckeditor_assets", force: :cascade do |t|

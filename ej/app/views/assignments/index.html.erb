@@ -10,6 +10,7 @@
     <tr>
         <td><h3>Title</h3></td>
         <td><h3>Draft Deadline</h3></td>
+        <td><h3>Comment Deadline</h3></td>
         <td><h3>Final Deadline</h3></td>
         <% if current_user.admin %>
           <td><h3>Link to Submissions</h3></td>
@@ -29,6 +30,7 @@
       <tr>
         <td><%= assignment.title%></td>
         <td><%= assignment.draft_deadline.strftime("%B %d, %Y at %l:%M %P")%></td>
+        <td><%= assignment.comment_deadline.strftime("%B %d, %Y at %l:%M %P")%></td>
         <td><%= assignment.final_deadline.strftime("%B %d, %Y at %l:%M %P")%></td>
         <% if current_user.admin %>
           <td><%= link_to 'Go to Posts', {:controller => 'posts', :action => 'index', :assignment_id => assignment.id}, class:'btn btn-default' %></td>
