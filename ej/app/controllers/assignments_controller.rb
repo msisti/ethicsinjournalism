@@ -25,7 +25,7 @@ class AssignmentsController < ApplicationController
   # POST /assignments.json
   def create
     @assignment = Assignment.new(params[:assignment].permit(:title, :description, :draft_deadline, :final_deadline, :comment_deadline, :description2,
-                         positions_attributes:[:id, :title, :_destroy]))
+                         :is2group, positions_attributes:[:id, :title, :_destroy]))
 
     respond_to do |format|
       if @assignment.save
@@ -43,7 +43,7 @@ class AssignmentsController < ApplicationController
   def update
     respond_to do |format|
       if @assignment.update(params[:assignment].permit(:title, :description, :draft_deadline, :final_deadline, :comment_deadline, :description2,
-                         positions_attributes:[:id, :title, :_destroy]))
+                         :is2group, positions_attributes:[:id, :title, :_destroy]))
         format.html { redirect_to assignments_path, notice: 'Assignment was successfully updated.' }
         format.json { render :show, status: :ok, location: @assignment }
       else
@@ -71,6 +71,6 @@ class AssignmentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def assignment_params
-      params.require(:assignment).permit(:title, :description, :draft_deadline, :final_deadline, :comment_deadline, :descruotuib2, positions_attributes: [:id, :title])
+      params.require(:assignment).permit(:title, :description, :draft_deadline, :final_deadline, :comment_deadline, :description2, :is2group, positions_attributes: [:id, :title])
     end
 end

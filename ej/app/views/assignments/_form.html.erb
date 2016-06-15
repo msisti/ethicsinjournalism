@@ -42,9 +42,10 @@ jQuery(document).ready(function(){
       <%= f.cktext_area :description %><br>
     </div>
     <div class="col-md-6">
-      <label id="group2ExistsLabel" data-toggle='tooltip' data-placement='top' data-original-title="If you no longer want a second group, please delete any text in the Group 2 Description box!">
+      <label id="group2ExistsLabel" data-toggle='tooltip' data-placement='top' data-original-title="If you no longer want a second group, please delete any text in the Group 2 Description box before unchecking this box!">
         Group 2 Assignment? 
-        <input type="checkbox" path="group2Exists" id="group2Exists" value="" ></input>
+        <!-- <input type="checkbox" path="group2Exists" id="group2Exists" value="" ></input> -->
+        <%= f.check_box :is2group, :path => "group2Exists", :id => "group2Exists"%>
       </label>
       <div id="group2assign">
         <%= f.label :group_2_description%>
