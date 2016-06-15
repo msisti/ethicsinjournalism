@@ -1,9 +1,21 @@
 <script>
+$(function () {
+        $("[data-toggle='tooltip']").tooltip();
+    });
 jQuery(document).ready(function(){
-        $("#group2assign").hide();
-        jQuery('#group2Exists').on('click', function(event) {        
+        if($("#desc2").val().length > 0){
+          $("#group2assign").show();
+          $("#group2Exists").prop( "checked", true );
+          // $("#group2Exists").prop( "disabled", true );
+          jQuery('#group2Exists').on('click', function(event) {        
+             jQuery('#group2assign').toggle('hide');
+          });
+        } else {
+          $("#group2assign").hide();
+          jQuery('#group2Exists').on('click', function(event) {        
              jQuery('#group2assign').toggle('show');
-        });
+          });
+        }
     });
 </script>
 
@@ -22,7 +34,7 @@ jQuery(document).ready(function(){
   <% end %>
   
   <%= f.label :title%>
-  <%= f.text_field :title%><br>
+  <%= f.text_field :title %><br>
   <div class="row">
     <div class="col-md-6">
       <b>Group 1 Assignment</b><br>
@@ -30,14 +42,14 @@ jQuery(document).ready(function(){
       <%= f.cktext_area :description %><br>
     </div>
     <div class="col-md-6">
-      <label id="group2ExistsLabel">
+      <label id="group2ExistsLabel" data-toggle='tooltip' data-placement='top' data-original-title="If you no longer want a second group, please delete any text in the Group 2 Description box!">
         Group 2 Assignment? 
-        <input type="checkbox" path="group2Exists" id="group2Exists" value=""></input>
+        <input type="checkbox" path="group2Exists" id="group2Exists" value="" ></input>
       </label>
-      <br>
       <div id="group2assign">
-        <%= f.label :description2%>
-        <!-- place group 2's text editor and comment form here! -->
+        <%= f.label :group_2_description%>
+        <%= f.cktext_area :description2, :id => 'desc2'%><br>
+        <!-- place group 2's comment form here! -->
       </div>
     </div>
   </div>
