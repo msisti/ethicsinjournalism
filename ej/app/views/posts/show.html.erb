@@ -1,14 +1,3 @@
-<script>
-jQuery(document).ready(function(){
-  $("#showAssign").hide();
-  jQuery('#assignButton').on('click', function(event) {        
-    jQuery('#showAssign').toggle('show');
-  });
-});
-</script>
-
-
-
 <p id="notice"><%= notice %></p>
 
 <div class="page-header">
@@ -109,13 +98,6 @@ jQuery(document).ready(function(){
           <%=f.submit "Save Note" %>
         <%end%>
       <% end %>
-      <br><br>
-      <button class="btn btn-default" id="assignButton">Show Assignment Description for this Post</button>
-      <div id="showAssign" width="200px">
-        <h4>Assignment Description:</h4>
-        <p>description will be here </p>
-        <!-- find which group user was in for assignment (if there were 2 groups), show corresponding assignment description -->
-      </div>
     </div>
 </nav>
 </div>

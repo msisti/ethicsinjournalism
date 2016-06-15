@@ -15,7 +15,9 @@ jQuery(document).ready(function(){
   <thead>
     <th><h3>Headline</h3></th>
     <th><h4>Author</h4></th>
-    <!-- <th><h4>Position</h4></th> -->
+    <% if @areThereTwo == true %>
+      <th><h4>Group Number</h4></th>
+    <% end %>
     <th><h4>Link</h4></th>
     <% if current_user.admin? %>
       <th><h4>Note for This Post</h4></th>
@@ -28,11 +30,14 @@ jQuery(document).ready(function(){
           <tr>
             <td><h4><%= post.headline %></h4></td>
             <td><%= post.user.name %></td>
-            <!-- <% if post.position.nil? %>
-            <td>No position for this assignment</td>
-            <% else %>
-            <td><%= post.position.title %></td>
-            <% end %> -->
+            <!-- Check which group number post was for (if there were 2 groups) -->
+            <% if @areThereTwo == true %>
+              <% if post.user.assigned_groups[@twoGroupCount.to_i - 1] == "1" %>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1</td>
+              <% else %>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2</td>
+              <% end %>
+            <% end %> 
             <td><%= link_to 'Go to Post', post, class:'btn btn-default btn-sm' %></td>
             <% if post.notes.where(:user_id => current_user.id).exists? %>
               <td><div id='content'><%= post.notes.where(:user_id => current_user.id).first.content %></div>
@@ -43,6 +48,13 @@ jQuery(document).ready(function(){
           <tr>
             <td><h4><%= post.headline %></h4></td>
             <td><%= post.user.name %></td>
+            <% if @areThereTwo == true %>
+              <% if post.user.assigned_groups[@twoGroupCount.to_i - 1] == "1" %>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1</td>
+              <% else %>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2</td>
+              <% end %>
+            <% end %> 
             <td><%= link_to 'Go to Post', post, class:'btn btn-default btn-sm' %></td>
           </tr>
 

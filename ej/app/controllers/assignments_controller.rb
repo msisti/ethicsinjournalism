@@ -17,6 +17,10 @@ class AssignmentsController < ApplicationController
     1.times { @assignment.positions.build}
   end
 
+  def is2group=(some_value)
+    @is2group=some_value #real assignment! no more fooling
+  end
+
   # GET /assignments/1/edit
   def edit
   end

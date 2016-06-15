@@ -11,10 +11,22 @@
     </div>
   <% end %>
 <div>
-  <h3>Assignment: </h3>
+
+<h3>Assignment: </h3>
 <h4><%= @assignment.title %></h4>
 <h3>Description: </h3>
-<p><%= @assignment.description.html_safe %></p>
+
+<% if @assignment.is2group %>
+  <% if current_user.assigned_groups[@twoGroupCount.to_i - 1] == "1" %>
+    <p><%= @assignment.description.html_safe %></p>
+  <% else %>
+    <p><%= @assignment.description2.html_safe %></p>
+  <% end %>
+<% else %>
+  <p><%= @assignment.description.html_safe %></p>
+<% end %>
+
+  
 </div>
 <br>
 <br>

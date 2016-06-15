@@ -4,12 +4,18 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
   def index
-    if current_user.admin?
-      @assignment = Assignment.find(params[:assignment_id])
-      @posts = Post.where(assignment_id: @assignment.id)
-    else 
-      @assignment = Assignment.find(params[:assignment_id])
-      @posts = Post.where(assignment_id: @assignment.id)
+    @assignment = Assignment.find(params[:assignment_id])
+    @posts = Post.where(assignment_id: @assignment.id)
+    @areThereTwo = @assignment.is2group
+    if @assignment.is2group # need to assign user to a new group number, either 1 or 2
+      @twoGroupCount = 0
+      Assignment.where(is2group: true).each do |a|
+        if a.id <= @assignment.id
+          @twoGroupCount += 1
+        end
+      end
+    end
+    if !current_user.admin?
       @post =  Post.where(assignment_id: @assignment.id, user_id: current_user.id).first
       ahoy.track "Visited Assignments Page"
     end
@@ -41,6 +47,27 @@ class PostsController < ApplicationController
   # GET /posts/new
   def new
     @assignment = Assignment.find(params[:assignment_id])
+    if @assignment.is2group # need to assign user to a new group number, either 1 or 2
+      @twoGroupCount = 0
+      Assignment.where(is2group: true).each do |a|
+        if a.id <= @assignment.id
+          @twoGroupCount += 1
+        end
+      end
+      if current_user.assigned_groups != nil # user has previously been assigned to a group
+        # alternate the group users are assigned to
+        if current_user.assigned_groups.length < @twoGroupCount
+          if current_user.assigned_groups[current_user.assigned_groups.length-1] == "1"
+            current_user.assigned_groups << "2"
+          else 
+            current_user.assigned_groups << "1"
+          end
+        end
+      else # assigned_group string is nil, must create string and assign initial group number to user
+        current_user.assigned_groups = ((current_user.id.to_i % 2) + 1).to_i
+      end
+    end
+    current_user.save
     @post = Post.new(assignment_id: @assignment.id)
   end
 
@@ -48,6 +75,15 @@ class PostsController < ApplicationController
   def edit
     @post = Post.find(params[:id])
     @assignment = Assignment.find(@post.assignment_id)
+    if @assignment.is2group # need to assign user to a new group number, either 1 or 2
+      @twoGroupCount = 0
+      Assignment.where(is2group: true).each do |a|
+        if a.id <= @assignment.id
+          @twoGroupCount += 1
+        end
+      end
+    end
+
     ahoy.track "Edited Post", post_id: @post.id
   end
 
@@ -127,6 +163,6 @@ class PostsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
-        params.require(:post).permit(:headline, :draft1, :draft2, :bookmarked, :user_id, :assignment_id, :position_id)
+        params.require(:post).permit(:headline, :draft1, :draft2, :bookmarked, :user_id, :assignment_id, :position_id, :assigned_groups)
     end
 end
