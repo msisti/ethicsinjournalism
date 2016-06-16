@@ -41,6 +41,7 @@ jQuery(document).ready(function(){
       <%= f.label :description %>
       <%= f.cktext_area :description %><br>
     </div>
+
     <div class="col-md-6">
       <label id="group2ExistsLabel" data-toggle='tooltip' data-placement='top' data-original-title="If you no longer want a second group, please delete any text in the Group 2 Description box before unchecking this box!">
         Group 2 Assignment? 
@@ -54,6 +55,35 @@ jQuery(document).ready(function(){
       </div>
     </div>
   </div>
+
+  <table align="center">
+   <th>
+    <h4>Create Comment Form for Each Group</h4>
+    <h5>Leave the form on the right (for group 2) blank if you don't want a separate comment form for group 2.</h5>
+   </th>
+   <tr>
+    <%= f.nested_fields_for :comment_forms do |c| %>
+      <td>
+          <%= c.hidden_field :group_number, value: 1 %>
+          <%= c.label :name, "Name this Comment Form:" %>
+          <%= c.text_field :name %><br>
+
+          Write in up to four comment prompts to be a part of this comment form.<br>
+          <ul>
+            <%= c.nested_fields_for :comment_prompts do |p| %>
+              <li>
+                <%= p.label :question %>
+                <%= p.text_field :question %><br>
+                <%= p.label :hint %>
+                <%= p.text_field :hint %>
+              </li>
+            <% end %>
+          </ul><br>
+        </td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+    <% end %>
+  </tr>
+</table>
+
   <div align="center">
   <%= f.label :draft_deadline%>
   <%= f.datetime_select(:draft_deadline, ampm: true)%><br><br>

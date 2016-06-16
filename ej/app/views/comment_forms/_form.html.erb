@@ -1,0 +1,33 @@
+<%= form_for(@comment_form) do |f| %>
+  <% if @comment_form.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@comment_form.errors.count, "error") %> prohibited this comment_form from being saved:</h2>
+
+      <ul>
+      <% @comment_form.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  
+    <%= f.hidden_field :group_number, value: 2 %>
+    <%= f.label :name, "Name this Comment Form:" %>
+    <%= f.text_field :name %><br>
+
+    Write in up to four comment prompts to be a part of this comment form.<br>
+    <ul>
+      <%= f.nested_fields_for :comment_prompts do |p| %>
+        <li>
+          <%= p.label :question %>
+          <%= p.text_field :question %><br>
+          <%= p.label :hint %>
+          <%= p.text_field :hint %>
+        </li>
+      <% end %>
+    </ul>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,17 @@
+<%= form_for(@comment_prompt) do |f| %>
+  <% if @comment_prompt.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@comment_prompt.errors.count, "error") %> prohibited this comment_prompt from being saved:</h2>
+
+      <ul>
+      <% @comment_prompt.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,2 @@
+module CommentPromptsHelper
+end
