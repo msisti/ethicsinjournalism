@@ -137,27 +137,26 @@
       
       <br>
       <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-  <% Note.where(:user_id => current_user.id).each_with_index do |note, index| %>
-   <% if Post.where(:id => note.post_id).first.assignment_id == @assignment.id %>
-   <div class="panel panel-default">
-    <div class="panel-heading" role="tab" id="heading" >
-      <h4 class="panel-title">
-        <a role="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse<%= index+1 %>" aria-expanded="true" aria-controls="collapse<%= index+1 %>" >
-          "<%= Post.where(:id => note.post_id).first.headline %>" by <%= User.where(:id => Post.where(:id => note.post_id).first.user_id).first.name %>
-        </a>
-      </h4>
+        <% Note.where(:user_id => current_user.id).each_with_index do |note, index| %>
+          <% if Post.where(:id => note.post_id).first.assignment_id == @assignment.id %>
+            <div class="panel panel-default">
+              <div class="panel-heading" role="tab" id="heading" >
+                <h4 class="panel-title">
+                  <a role="button" class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse<%= index+1 %>" aria-expanded="true" aria-controls="collapse<%= index+1 %>" >
+                    "<%= Post.where(:id => note.post_id).first.headline %>" by <%= User.where(:id => Post.where(:id => note.post_id).first.user_id).first.name %>
+                  </a>
+                </h4>
+              </div>
+              <div id="collapse<%= index+1 %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading<% note.id %>" >
+                <div class="panel-body">
+                  <%= note.content %><br>
+                </div>
+              </div>
+            </div>
+          <% end %>
+      <% end %>
     </div>
-    <div id="collapse<%= index+1 %>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading<% note.id %>" >
-      <div class="panel-body">
-        <%= note.content %><br>
-      </div>
-    </div>
-   </div>
-   <% end %>
-
-  <% end %>
-  </div>
-    </div>
+  ß</div>
     
     
     <div role="tabpanel" class="tab-pane" id="comments">

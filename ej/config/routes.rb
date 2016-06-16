@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :comment_answers
   mount Ckeditor::Engine => '/ckeditor'
   get 'posts/inclass' => 'posts#inclass'
   get 'posts/myposts' => 'posts#myposts'

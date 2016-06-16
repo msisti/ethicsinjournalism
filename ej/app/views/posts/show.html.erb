@@ -28,19 +28,26 @@
       <table class="table table-bordered">
         <%@comments = @post.comments.order('created_at ASC')%>
         <%@comments.each do |c|%>
+          <% c.comment_answers.each do |a| %>
           <tr>
-            <td width="80%"><%=c.content.html_safe%></td>
-            <td width="20%" align="right">Commenter: <%=c.user.name%></td>
+            <td width="80%"><%=a.content.html_safe%></td>
+            <td width="20%" align="right">Commenter: <%=a.user.name%></td>
           </tr>
+          <% end %>
         <%end%>
       </table>
       <!-- create new comment -->
-      <% if Time.now <= @post.assignment.comment_deadline || current_user.admin? %>
+      <% if Time.now <= @post.assignment.comment_deadline || current_user.admin? %> <!-- deadline hasn't passed, or user is an admin, so user can write comments still -->
         <%=form_for(Comment.new) do |f|%>
-          <%=f.label :content, 'Add a Comment'%><br>
-          <%=f.text_area :content, :cols => "90" %><br>
           <%=f.hidden_field :user_id, value: current_user.id%>
-          <%=f.hidden_field :post_id, value: @post.id%>
+          <%= f.hidden_field :post_id, value: @post.id %>
+          <%= f.fields_for :comment_answers, CommentAnswer.new do |c| %>
+            <div class="field">
+              <%= c.hidden_field :user_id, value: current_user.id %>
+              <%= c.label :content, "Comment Answer" %>
+              <%= c.text_area :content, :cols => "90" %><br>
+            </div>
+          <% end %>
           <%=f.submit "Save Comment"%>
         <%end%>
       <% end %>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160615165327) do
+ActiveRecord::Schema.define(version: 20160616133326) do
 
   create_table "ahoy_events", force: :cascade do |t|
     t.uuid     "visit_id",   limit: 16
@@ -52,6 +52,15 @@ ActiveRecord::Schema.define(version: 20160615165327) do
 
   add_index "ckeditor_assets", ["assetable_type", "assetable_id"], name: "idx_ckeditor_assetable", using: :btree
   add_index "ckeditor_assets", ["assetable_type", "type", "assetable_id"], name: "idx_ckeditor_assetable_type", using: :btree
+
+  create_table "comment_answers", force: :cascade do |t|
+    t.text     "content",           limit: 65535
+    t.integer  "user_id",           limit: 4
+    t.integer  "comment_id",        limit: 4
+    t.integer  "comment_prompt_id", limit: 4
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+  end
 
   create_table "comments", force: :cascade do |t|
     t.text     "content",    limit: 65535
