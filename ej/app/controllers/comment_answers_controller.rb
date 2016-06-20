@@ -24,7 +24,7 @@ class CommentAnswersController < ApplicationController
   # POST /comment_answers
   # POST /comment_answers.json
   def create
-    @comment_answer = CommentAnswer.new(comment_answer_params)
+    @comment_answer = CommentAnswer.new(params[:comment_answer].permit(:content, :comment_id, :user_id, :comment_prompt_id))
 
     respond_to do |format|
       if @comment_answer.save
@@ -69,6 +69,6 @@ class CommentAnswersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def comment_answer_params
-      params.require(:comment_answer).permit(:content, :comment_id, :user_id)
+      params.require(:comment_answer).permit(:content, :comment_id, :user_id, :comment_prompt_id)
     end
 end

@@ -38,16 +38,30 @@
       </table>
       <!-- create new comment -->
       <% if Time.now <= @post.assignment.comment_deadline || current_user.admin? %> <!-- deadline hasn't passed, or user is an admin, so user can write comments still -->
+      <h4>Comment Form</h4>
         <%=form_for(Comment.new) do |f|%>
           <%=f.hidden_field :user_id, value: current_user.id%>
           <%= f.hidden_field :post_id, value: @post.id %>
-          <%= f.fields_for :comment_answers, CommentAnswer.new do |c| %>
-            <div class="field">
-              <%= c.hidden_field :user_id, value: current_user.id %>
-              <%= c.label :content, "Comment Answer" %>
-              <%= c.text_area :content, :cols => "90" %><br>
+          <%= f.hidden_field :comment_form_id, value: @form.id %>
+          
+          <div class="row">
+
+          <% @form.comment_prompts.each do |prompt| %>
+            <div class="col-sm-4">
+            Question: <%= prompt.question %><br>
+            Hint: <%= prompt.hint %>
+            </div>
+            <div class="col-sm-8">
+            <%= f.fields_for :comment_answers, CommentAnswer.new do |c| %>
+              <div class="field">
+                <%= c.hidden_field :user_id, value: current_user.id %>
+                <%= c.hidden_field :comment_prompt_id, value: prompt.id %>
+                <%= c.text_area :content, :cols => "90" %><br>
+              </div>
+            <% end %>
             </div>
           <% end %>
+          </div>
           <%=f.submit "Save Comment"%>
         <%end%>
       <% end %>
