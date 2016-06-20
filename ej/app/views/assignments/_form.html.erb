@@ -51,7 +51,6 @@ jQuery(document).ready(function(){
       <div id="group2assign">
         <%= f.label :group_2_description%>
         <%= f.cktext_area :description2, :id => 'desc2'%><br>
-        <!-- place group 2's comment form here! -->
       </div>
     </div>
   </div>
@@ -62,6 +61,7 @@ jQuery(document).ready(function(){
     <h5>Leave the form on the right (for group 2) blank if you don't want a separate comment form for group 2.</h5>
    </th>
    <tr>
+   <!--  <b>Reuse a past Comment Form:</b> <%= collection_select(:assignment, :comment_forms, CommentForm.all, :id, :name, prompt: true) %> -->
     <%= f.nested_fields_for :comment_forms do |c| %>
       <td>
           <%= c.hidden_field :group_number, value: 1 %>

@@ -1,15 +1,44 @@
+<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+<script type="text/javascript">
+
+function showComment(linkID, divID) {
+  if ($(divID).css('display') == 'none') {
+    jQuery(divID).css('display','inline-block');
+  } else {
+    jQuery(divID).css('display','none');
+  }
+}
+
+function expandAll() {
+  $(".toggle-able").css('display', 'inline-block');
+}
+
+function collapseAll() {
+  $(".toggle-able").css('display', 'none');
+}
+
+$(function() {
+  $( "#resizable" ).resizable({
+    minHeight: 70,
+    minWidth: 100
+  });
+});
+</script>
+
+
 <p id="notice"><%= notice %></p>
 
 <div class="page-header">
   <h1><%= @post.headline %><small>                  by: <%= @post.user.name %></small></h1>
 </div>
-<!-- Positions removed -->
 
 <div class="row">
   <div class="col-md-9" id="mainPost" data-target="#myScrollspy">
   <br>
   <h4 id="firstDraft">First Draft</h4>
-  <div class="well well-lg">
+  <div id="resizable" class="well well-lg ui-widget-content" style="resize: both; overflow: hidden;">
      <%= @post.draft1.html_safe %>
   </div>
 
@@ -17,6 +46,10 @@
     <div class="col-sm-8">
     
       <h4 id="comments">Comments</h4>
+      <div align="center">
+        <button id="expandAll" class="btn btn-default btn-xs" onclick="expandAll()">Expand All Comments</button>
+        <button id="collapseAll" class="btn btn-default btn-xs" onclick="collapseAll()">Collapse All Comments</button><br><br>
+      </div>
       <div class="alert alert-warning" role="alert">
         <%if Time.now > @post.assignment.comment_deadline %>
           The Commenting Deadline has passed.
@@ -25,19 +58,33 @@
           <br>
         <% end %>
       </div>
-      <table class="table table-bordered">
+      <!-- <table class="table table-bordered"> -->
         <%@comments = @post.comments.order('created_at ASC')%>
-        <%@comments.each do |c|%>
-          <% c.comment_answers.each do |a| %>
-          <tr>
-            <td width="80%"><%=a.content.html_safe%></td>
-            <td width="20%" align="right">Commenter: <%=a.user.name%></td>
-          </tr>
-          <% end %>
+        <div id="commentDiv">
+        <%@comments.each_with_index do |c, index|%>
+          <div class="row" id="listAllComments">
+          <!-- <tr>
+            <td width="10%" align="center"> -->
+            <div class="col-md-4" align="center" style="padding:20px; background-color: #f2f2f2; border: 3px solid #fff;" onclick="">
+              Commenter: <%=c.user.name%><br>
+              <button id="<%='expand' + index.to_s %>" onclick="showComment(this.id, <%='more'+index.to_s %>)" class="btn btn-default btn-xs"> Expand/Collapse
+              </button>
+            </div>
+            <div class="toggle-able col-md-8" id="<%='more'+index.to_s %>" style="display: none; word-wrap: break-word; border: 3px solid #fff; padding: 20px;">
+              <% c.comment_answers.each do |a| %>
+                <b><%= CommentPrompt.find(a.comment_prompt_id).question %></b>:
+                <%=a.content.html_safe%><br>
+                <!-- </tr><tr> -->
+              <% end %>
+            </div>
+<!--             </td>
+          </tr> -->
+          </div>
         <%end%>
-      </table>
+      </div>
+<!--       </table> -->
       <!-- create new comment -->
-      <% if Time.now <= @post.assignment.comment_deadline || current_user.admin? %> <!-- deadline hasn't passed, or user is an admin, so user can write comments still -->
+      <% if Time.now <= @post.assignment.comment_deadline || current_user.admin? %> <!-- deadline hasn't passed, or user is an admin, so user can still write comments -->
       <h4>Comment Form</h4>
         <%=form_for(Comment.new) do |f|%>
           <%=f.hidden_field :user_id, value: current_user.id%>
@@ -47,19 +94,21 @@
           <div class="row">
 
           <% @form.comment_prompts.each do |prompt| %>
-            <div class="col-sm-4">
-            Question: <%= prompt.question %><br>
-            Hint: <%= prompt.hint %>
-            </div>
-            <div class="col-sm-8">
-            <%= f.fields_for :comment_answers, CommentAnswer.new do |c| %>
-              <div class="field">
-                <%= c.hidden_field :user_id, value: current_user.id %>
-                <%= c.hidden_field :comment_prompt_id, value: prompt.id %>
-                <%= c.text_area :content, :cols => "90" %><br>
+            <% if prompt.question.length > 0 %>
+              <div class="col-sm-4">
+                <b><%= prompt.question %></b><br>
+                Hint: <%= prompt.hint %>
+              </div>
+              <div class="col-sm-8">
+                <%= f.fields_for :comment_answers, CommentAnswer.new do |c| %>
+                  <div class="field">
+                    <%= c.hidden_field :user_id, value: current_user.id %>
+                    <%= c.hidden_field :comment_prompt_id, value: prompt.id %>
+                    <%= c.text_area :content, :cols => "90" %><br>
+                  </div>
+                <% end %>
               </div>
             <% end %>
-            </div>
           <% end %>
           </div>
           <%=f.submit "Save Comment"%>

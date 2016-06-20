@@ -15,7 +15,7 @@ jQuery(document).ready(function(){
   <thead>
     <th><h3>Headline</h3></th>
     <th><h4>Author</h4></th>
-    <% if @areThereTwo == true %>
+    <% if @assignment.is2group %>
       <th><h4>Group Number</h4></th>
     <% end %>
     <th><h4>Link</h4></th>
@@ -31,7 +31,7 @@ jQuery(document).ready(function(){
             <td><h4><%= post.headline %></h4></td>
             <td><%= post.user.name %></td>
             <!-- Check which group number post was for (if there were 2 groups) -->
-            <% if @areThereTwo == true %>
+            <% if @assignment.is2group %>
               <% if post.user.assigned_groups[@twoGroupCount.to_i - 1] == "1" %>
                 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1</td>
               <% else %>
@@ -48,7 +48,7 @@ jQuery(document).ready(function(){
           <tr>
             <td><h4><%= post.headline %></h4></td>
             <td><%= post.user.name %></td>
-            <% if @areThereTwo == true %>
+            <% if @assignment.is2group %>
               <% if post.user.assigned_groups[@twoGroupCount.to_i - 1] == "1" %>
                 <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1</td>
               <% else %>
