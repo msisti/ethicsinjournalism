@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160616161948) do
+ActiveRecord::Schema.define(version: 20160620235731) do
 
   create_table "ahoy_events", force: :cascade do |t|
     t.uuid     "visit_id",   limit: 16
@@ -68,6 +68,14 @@ ActiveRecord::Schema.define(version: 20160616161948) do
     t.integer  "assignment_id", limit: 4
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
+    t.string   "question1",     limit: 255
+    t.string   "question2",     limit: 255
+    t.string   "question3",     limit: 255
+    t.string   "question4",     limit: 255
+    t.string   "hint1",         limit: 255
+    t.string   "hint2",         limit: 255
+    t.string   "hint3",         limit: 255
+    t.string   "hint4",         limit: 255
   end
 
   create_table "comment_prompts", force: :cascade do |t|
@@ -85,6 +93,10 @@ ActiveRecord::Schema.define(version: 20160616161948) do
     t.integer  "comment_form_id", limit: 4
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
+    t.text     "answer1",         limit: 65535
+    t.text     "answer2",         limit: 65535
+    t.text     "answer3",         limit: 65535
+    t.text     "answer4",         limit: 65535
   end
 
   create_table "likes", force: :cascade do |t|

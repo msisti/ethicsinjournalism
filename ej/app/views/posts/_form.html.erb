@@ -26,17 +26,17 @@
   <p><%= @assignment.description.html_safe %></p>
 <% end %>
 
-  
+
 </div>
 <br>
 <br>
 <table>
- <td>  
+ <td>
   <%= f.hidden_field :user_id, value: current_user.id %>
   <%= f.hidden_field :assignment_id, value: @assignment.id %>
   <%= f.label :headline %>
   <%= f.text_field :headline %><br>
- 
+
   <!-- Don't need this anymore, no positions will be used!
     <% if @assignment.positions.count == 1 %>
       <%=f.hidden_field :position_id, value: @assignment.positions.first %>
@@ -51,10 +51,10 @@
       <% end %>
     <% end %>
     -->
-    
+
   <br>
   <br>
-  
+
   <% if @post.submitted %>
     <div class="well well-lg">
       <%= @post.draft1.html_safe %>
@@ -78,7 +78,7 @@
       </div>
     <% end %>
   <% end %>
-  
+
   <% if @post.submitted %>
     <%= f.label :draft2 %>
     <%= f.cktext_area :draft2 %><br>
@@ -134,7 +134,7 @@
   <!-- Tab panes -->
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="notes">
-      
+
       <br>
       <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
         <% Note.where(:user_id => current_user.id).each_with_index do |note, index| %>
@@ -157,8 +157,8 @@
       <% end %>
     </div>
   </div>
-    
-    
+
+
     <div role="tabpanel" class="tab-pane" id="comments">
       <table class="table table-bordered">
 	<%@comments = @post.comments.order('created_at ASC')%>

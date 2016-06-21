@@ -11,22 +11,38 @@
     </div>
   <% end %>
 
-  
+
     <%= f.hidden_field :group_number, value: 2 %>
     <%= f.label :name, "Name this Comment Form:" %>
     <%= f.text_field :name %><br>
-
     Write in up to four comment prompts to be a part of this comment form.<br>
     <ul>
-      <%= f.nested_fields_for :comment_prompts do |p| %>
-        <li>
-          <%= p.label :question %>
-          <%= p.text_field :question %><br>
-          <%= p.label :hint %>
-          <%= p.text_field :hint %>
-        </li>
-      <% end %>
+      <li>
+        <%= c.label :question1, "Question:" %>
+        <%= c.text_field :question1 %><br>
+        <%= c.label :hint1, "Hint:" %>
+        <%= c.text_field :hint1 %>
+      </li>
+      <li>
+        <%= c.label :question2, "Question:" %>
+        <%= c.text_field :question2 %><br>
+        <%= c.label :hint2, "Hint:" %>
+        <%= c.text_field :hint2 %>
+      </li>
+      <li>
+        <%= c.label :question3, "Question:" %>
+        <%= c.text_field :question3 %><br>
+        <%= c.label :hint3, "Hint:" %>
+        <%= c.text_field :hint3 %>
+      </li>
+      <li>
+        <%= c.label :question4, "Question:" %>
+        <%= c.text_field :question4 %><br>
+        <%= c.label :hint4, "Hint:" %>
+        <%= c.text_field :hint4 %>
+      </li>
     </ul>
+
   <div class="actions">
     <%= f.submit %>
   </div>

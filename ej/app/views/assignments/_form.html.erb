@@ -1,22 +1,21 @@
-<script>
-$(function () {
-        $("[data-toggle='tooltip']").tooltip();
-    });
+<script type="text/javascript">
+
 jQuery(document).ready(function(){
-        if($("#desc2").val().length > 0){
-          $("#group2assign").show();
-          $("#group2Exists").prop( "checked", true );
-          // $("#group2Exists").prop( "disabled", true );
-          jQuery('#group2Exists').on('click', function(event) {        
-             jQuery('#group2assign').toggle('hide');
-          });
-        } else {
-          $("#group2assign").hide();
-          jQuery('#group2Exists').on('click', function(event) {        
-             jQuery('#group2assign').toggle('show');
-          });
-        }
-    });
+  if ($("#group2Exists").prop('checked') == true) {
+    console.log("I made it!");
+    jQuery("#group2assign").css('display','inline-block');
+  } else {
+    jQuery("#group2assign").css('display','none');
+  }
+});
+
+  function showGroup2(divID) {
+    if ($(divID).css('display') == 'none') {
+      jQuery(divID).css('display','inline-block');
+    } else {
+      jQuery(divID).css('display','none');
+    }
+  }
 </script>
 
 
@@ -32,7 +31,7 @@ jQuery(document).ready(function(){
       </ul>
     </div>
   <% end %>
-  
+
   <%= f.label :title%>
   <%= f.text_field :title %><br>
   <div class="row">
@@ -40,50 +39,95 @@ jQuery(document).ready(function(){
       <b>Group 1 Assignment</b><br>
       <%= f.label :description %>
       <%= f.cktext_area :description %><br>
+
+      <h4>Comment Form for Group 1</h4>
+      <%= f.fields_for :comment_forms, @assignment.comment_forms[0] do |c| %>
+        <h5>Reuse a pre-existing comment form:</h5>
+        <!-- collection_select(:assignment, :comment_forms, CommentForm.all, :id, :name, prompt: true) %> -->
+
+        <%= c.hidden_field :group_number, value: 1 %>
+        <%= c.label :name, "Name this Comment Form:" %>
+        <%= c.text_field :name %><br>
+
+        Write in up to four comment prompts for this comment form.<br>
+        <ul>
+          <li>
+            <%= c.label :question1, "Question:" %>
+            <%= c.text_field :question1 %><br>
+            <%= c.label :hint1, "Hint:" %>
+            <%= c.text_field :hint1 %>
+          </li>
+          <li>
+            <%= c.label :question2, "Question:" %>
+            <%= c.text_field :question2 %><br>
+            <%= c.label :hint2, "Hint:" %>
+            <%= c.text_field :hint2 %>
+          </li>
+          <li>
+            <%= c.label :question3, "Question:" %>
+            <%= c.text_field :question3 %><br>
+            <%= c.label :hint3, "Hint:" %>
+            <%= c.text_field :hint3 %>
+          </li>
+          <li>
+            <%= c.label :question4, "Question:" %>
+            <%= c.text_field :question4 %><br>
+            <%= c.label :hint4, "Hint:" %>
+            <%= c.text_field :hint4 %>
+          </li>
+        </ul>
+      <% end %>
     </div>
 
     <div class="col-md-6">
       <label id="group2ExistsLabel" data-toggle='tooltip' data-placement='top' data-original-title="If you no longer want a second group, please delete any text in the Group 2 Description box before unchecking this box!">
-        Group 2 Assignment? 
-        <!-- <input type="checkbox" path="group2Exists" id="group2Exists" value="" ></input> -->
-        <%= f.check_box :is2group, :path => "group2Exists", :id => "group2Exists"%>
+        Group 2 Assignment?
+        <!-- <input type="checkbox" path="group2Exists" id="group2Exists" value="" onclick="showGroup2(group2assign)" ></input> -->
+        <%= f.check_box :is2group, :path => "group2Exists", :id => "group2Exists", :onclick => "showGroup2(group2assign);" %>
       </label>
-      <div id="group2assign">
+      <div id="group2assign" >
         <%= f.label :group_2_description%>
         <%= f.cktext_area :description2, :id => 'desc2'%><br>
-      </div>
-    </div>
-  </div>
 
-  <table align="center">
-   <th>
-    <h4>Create Comment Form for Each Group</h4>
-    <h5>Leave the form on the right (for group 2) blank if you don't want a separate comment form for group 2.</h5>
-   </th>
-   <tr>
-   <!--  <b>Reuse a past Comment Form:</b> <%= collection_select(:assignment, :comment_forms, CommentForm.all, :id, :name, prompt: true) %> -->
-    <%= f.nested_fields_for :comment_forms do |c| %>
-      <td>
-          <%= c.hidden_field :group_number, value: 1 %>
+        <h4>Comment Form for Group 2</h4>
+        <%= f.fields_for :comment_forms, @assignment.comment_forms[1] do |c| %>
+          <%= c.hidden_field :group_number, value: 2 %>
           <%= c.label :name, "Name this Comment Form:" %>
           <%= c.text_field :name %><br>
 
-          Write in up to four comment prompts to be a part of this comment form.<br>
+          Write in up to four comment prompts for this comment form.<br>
           <ul>
-            <%= c.nested_fields_for :comment_prompts do |p| %>
-              <li>
-                <%= p.label :question %>
-                <%= p.text_field :question %><br>
-                <%= p.label :hint %>
-                <%= p.text_field :hint %>
-              </li>
-            <% end %>
-          </ul><br>
-        </td><td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-    <% end %>
-  </tr>
-</table>
+            <li>
+              <%= c.label :question1, "Question:" %>
+              <%= c.text_field :question1 %><br>
+              <%= c.label :hint1, "Hint:" %>
+              <%= c.text_field :hint1 %>
+            </li>
+            <li>
+              <%= c.label :question2, "Question:" %>
+              <%= c.text_field :question2 %><br>
+              <%= c.label :hint2, "Hint:" %>
+              <%= c.text_field :hint2 %>
+            </li>
+            <li>
+              <%= c.label :question3, "Question:" %>
+              <%= c.text_field :question3 %><br>
+              <%= c.label :hint3, "Hint:" %>
+              <%= c.text_field :hint3 %>
+            </li>
+            <li>
+              <%= c.label :question4, "Question:" %>
+              <%= c.text_field :question4 %><br>
+              <%= c.label :hint4, "Hint:" %>
+              <%= c.text_field :hint4 %>
+            </li>
+          </ul>
+        <% end %>
 
+      </div>
+    </div>
+  </div>
+  <br><br>
   <div align="center">
   <%= f.label :draft_deadline%>
   <%= f.datetime_select(:draft_deadline, ampm: true)%><br><br>
@@ -91,19 +135,8 @@ jQuery(document).ready(function(){
   <%= f.datetime_select(:comment_deadline, ampm: true)%><br><br>
   <%= f.label :final_deadline%>
   <%= f.datetime_select(:final_deadline, ampm: true)%><br>
-  
-  <!-- <%= f.nested_fields_for :positions do |positions_form| %>
-    <h4>Position:</h4>
-      <%= positions_form.label :title %>
-      <%= positions_form.text_field :title %>
-      <%= positions_form.remove_nested_fields_link 'Delete', class: 'btn btn-danger', role: 'button' %>
-    <br>
-  <% end %>
-  <br>
-  <%= f.add_nested_fields_link :positions, 'Add Another Position', class: 'btn btn-primary', role: 'button' %> -->
-  
-  <br>  
-  <br>
+
+  <br><br>
   <div class="actions">
     <%= f.submit %>
   </div>

@@ -25,7 +25,8 @@ class CommentsController < ApplicationController
   # POST /comments
   # POST /comments.json
   def create
-    @comment = Comment.new(params[:comment].permit(:content, :user_id, :post_id, :comment_form_id, comment_answers_attributes:[:id, :content, :user_id, :comment_prompt_id]))
+    @comment = Comment.new(params[:comment].permit(:content, :user_id, :post_id, :comment_form_id, :answer1, :answer2, :answer3, :answer4,
+    comment_answers_attributes:[:id, :content, :user_id, :comment_prompt_id]))
 
     respond_to do |format|
       if @comment.save
@@ -42,7 +43,8 @@ class CommentsController < ApplicationController
   # PATCH/PUT /comments/1.json
   def update
     respond_to do |format|
-      if @comment.update(params[:comment].permit(:content, :user_id, :post_id, comment_answers_attributes:[:id, :content, :user_id]))
+      if @comment.update(params[:comment].permit(:content, :user_id, :post_id, :answer1, :answer2, :answer3, :answer4,
+        comment_answers_attributes:[:id, :content, :user_id]))
         format.html { redirect_to Post.where(id: @comment.post_id).first, notice: 'Comment was successfully updated.' }
         format.json { render :show, status: :ok, location: @comment }
       else
@@ -70,6 +72,7 @@ class CommentsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def comment_params
-        params.require(:comment).permit(:content, :post_id, :user_id, :comment_form_id, comment_answers_attributes: [:id, :content, :user_id, :comment_prompt_id])
+        params.require(:comment).permit(:content, :post_id, :user_id, :answer1, :answer2, :answer3, :answer4, :comment_form_id,
+        comment_answers_attributes: [:id, :content, :user_id, :comment_prompt_id])
     end
 end
