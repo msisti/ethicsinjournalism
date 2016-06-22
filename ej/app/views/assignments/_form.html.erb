@@ -7,6 +7,25 @@ jQuery(document).ready(function(){
   } else {
     jQuery("#group2assign").css('display','none');
   }
+
+  // $('assignment_comment_forms').live('click', function(event, data, status, xhr) {
+  //   event.preventDefault();
+  //   return $.ajax({
+  //     url: '/users/registrations/set_id',
+  //     type: 'GET',
+  //     data: {
+  //       code: $('#user_id').val()
+  //     },
+  //     success: function(data, event, status, xhr) {
+  //       $('#id_message').html(response);
+  //       return $("#id_message").show();
+  //     },
+  //     error: function(event, data, status, xhr) {
+  //       $('#id_message').html(response);
+  //       return $("#id_message").show();
+  //     }
+  //   });
+  // });
 });
 
   function showGroup2(divID) {
@@ -15,6 +34,26 @@ jQuery(document).ready(function(){
     } else {
       jQuery(divID).css('display','none');
     }
+  }
+
+  function fillCommentForm(formID) {
+    var x = '<%= @all_comment_forms.to_json.html_safe %>';
+    x = JSON.parse(x);
+    var selectedID = $('#comment_forms_'+formID).find(":selected").val();
+    for (var i = 0; i < x.length; i++) {
+      if (x[i].id == selectedID) {
+        x = x[i];
+      }
+    }
+    $('#assignment_comment_forms_attributes_'+formID+'_name').val(x.name);
+    $('#assignment_comment_forms_attributes_'+formID+'_question1').val(x.question1);
+    $('#assignment_comment_forms_attributes_'+formID+'_hint1').val(x.hint1);
+    $('#assignment_comment_forms_attributes_'+formID+'_question2').val(x.question2);
+    $('#assignment_comment_forms_attributes_'+formID+'_hint2').val(x.hint2);
+    $('#assignment_comment_forms_attributes_'+formID+'_question3').val(x.question3);
+    $('#assignment_comment_forms_attributes_'+formID+'_hint3').val(x.hint3);
+    $('#assignment_comment_forms_attributes_'+formID+'_question4').val(x.question4);
+    $('#assignment_comment_forms_attributes_'+formID+'_hint4').val(x.hint4);
   }
 </script>
 
@@ -32,8 +71,8 @@ jQuery(document).ready(function(){
     </div>
   <% end %>
 
-  <%= f.label :title%>
-  <%= f.text_field :title %><br>
+  <%= f.label :title, "Assignment Title" %>
+  <%= f.text_field :title %><br><br>
   <div class="row">
     <div class="col-md-6">
       <b>Group 1 Assignment</b><br>
@@ -42,9 +81,7 @@ jQuery(document).ready(function(){
 
       <h4>Comment Form for Group 1</h4>
       <%= f.fields_for :comment_forms, @assignment.comment_forms[0] do |c| %>
-        <h5>Reuse a pre-existing comment form:</h5>
-        <!-- collection_select(:assignment, :comment_forms, CommentForm.all, :id, :name, prompt: true) %> -->
-
+        <h5>Reuse a pre-existing comment form: <%= f.collection_select :comment_forms, CommentForm.order(:name), :id, :name, {}, {:id => "comment_forms_0", :onChange => "fillCommentForm(0);"} %></h5>
         <%= c.hidden_field :group_number, value: 1 %>
         <%= c.label :name, "Name this Comment Form:" %>
         <%= c.text_field :name %><br>
@@ -91,6 +128,7 @@ jQuery(document).ready(function(){
 
         <h4>Comment Form for Group 2</h4>
         <%= f.fields_for :comment_forms, @assignment.comment_forms[1] do |c| %>
+        <h5>Reuse a pre-existing comment form: <%= f.collection_select :comment_forms, CommentForm.order(:name), :id, :name, {}, {:id => "comment_forms_1", :onChange => "fillCommentForm(1);"} %></h5>
           <%= c.hidden_field :group_number, value: 2 %>
           <%= c.label :name, "Name this Comment Form:" %>
           <%= c.text_field :name %><br>

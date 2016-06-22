@@ -6,7 +6,7 @@ class PostsController < ApplicationController
   def index
     @assignment = Assignment.find(params[:assignment_id])
     @posts = Post.where(assignment_id: @assignment.id)
-    if @assignment.is2group 
+    if @assignment.is2group
       @twoGroupCount = @assignment.twoGroupCount(@assignment)
     end
     if !current_user.admin?
@@ -14,11 +14,11 @@ class PostsController < ApplicationController
       ahoy.track "Visited Assignments Page"
     end
   end
-  
+
   def inclass
     @posts = Post.where(bookmarked: true)
   end
-  
+
   def myposts
     if current_user.admin
       @user = User.find(params[:user_id])
@@ -51,29 +51,18 @@ class PostsController < ApplicationController
     @twoGroupCount = @assignment.twoGroupCount(@assignment)
     current_user.save
     @post = Post.new(assignment_id: @assignment.id)
-    # if @assignment.is2group # need to assign user to a new group number, either 1 or 2
-    #   @twoGroupCount = @assignment.twoGroupCount(@assignment)
-    #   if current_user.assigned_groups != nil # user has previously been assigned to a group
-    #     # alternate the group users are assigned to
-    #     if current_user.assigned_groups.length < @twoGroupCount
-    #       if current_user.assigned_groups[current_user.assigned_groups.length-1] == "1"
-    #         current_user.assigned_groups << "2"
-    #       else 
-    #         current_user.assigned_groups << "1"
-    #       end
-    #     end
-    #   else # assigned_group string is nil, must create string and assign initial group number to user
-    #     current_user.assigned_groups = ((current_user.id.to_i % 2) + 1).to_i
-    #   end
-    # end
   end
 
   # GET /posts/1/edit
   def edit
     @post = Post.find(params[:id])
     @assignment = Assignment.find(@post.assignment_id)
+    @form = @post.assignment.comment_forms[0]
     if @assignment.is2group # need to assign user to a new group number, either 1 or 2
       @twoGroupCount = @assignment.twoGroupCount(@assignment)
+      if @post.user.assigned_groups[@twoGroupCount.to_i - 1] == "2"
+        @form = @post.assignment.comment_forms[1]
+      end
     end
 
     ahoy.track "Edited Post", post_id: @post.id
@@ -83,15 +72,15 @@ class PostsController < ApplicationController
   # POST /posts.json
   def create
     @post = Post.new(post_params)
-   
+
     if params[:commit] == 'Submit Post To Class'
       @post.submitted = true
       #@post.draft2 = @post.draft1
       @post.draft2 = ""
-    else 
+    else
       @post.submitted = false
     end
-    
+
     respond_to do |format|
       if @post.save
         format.html { redirect_to edit_post_path(@post), notice: 'Post was successfully created.' }
@@ -107,12 +96,12 @@ class PostsController < ApplicationController
   # PATCH/PUT /posts/1.json
   def update
 
-    if params[:commit] == 'Submit Post To Class' 
+    if params[:commit] == 'Submit Post To Class'
       @post.submitted = true
       #@post.draft2 = @post.draft1
       @post.draft2 = ""
     end
-   
+
 
     respond_to do |format|
       if @post.update(post_params)
@@ -134,7 +123,7 @@ class PostsController < ApplicationController
       format.json { head :no_content }
     end
   end
-  
+
   def flop
     post = Post.find(params[:id])
     if !post.bookmarked

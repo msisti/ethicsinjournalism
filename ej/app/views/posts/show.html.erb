@@ -96,7 +96,7 @@ $(function() {
                     Hint: <%= @form.hint1 %><br>
                   </td>
                   <td>
-                    <%= f.text_area :answer1 %>
+                    <%= f.text_area :answer1, cols: 50, rows: 5 %>
                   </td>
                 </tr>
               <% end %>
@@ -107,7 +107,7 @@ $(function() {
                     Hint: <%= @form.hint2 %><br>
                   </td>
                   <td>
-                    <%= f.text_area :answer2 %>
+                    <%= f.text_area :answer2, cols: 50, rows: 5 %>
                   </td>
                 </tr>
               <% end %>
@@ -118,7 +118,7 @@ $(function() {
                     Hint: <%= @form.hint3 %><br>
                   </td>
                   <td>
-                    <%= f.text_area :answer3 %>
+                    <%= f.text_area :answer3, cols: 50, rows: 5 %>
                   </td>
                 </tr>
               <% end %>
@@ -129,7 +129,7 @@ $(function() {
                     Hint: <%= @form.hint4 %><br>
                   </td>
                   <td>
-                    <%= f.text_area :answer4 %>
+                    <%= f.text_area :answer4, cols: 50, rows: 5 %>
                   </td>
                 </tr>
               <% end %>
@@ -176,12 +176,12 @@ $(function() {
     <p>Take notes on this post here. Only you can see your notes.</p>
     <% if @post.notes.where(:user_id => current_user.id).exists? %>
       <%=form_for(@post.notes.where(:user_id => current_user.id).first) do |f|%>
-        <%=f.text_area :content %><br>
+        <%=f.text_area :content, cols: 40, rows: 5 %><br>
         <%=f.submit "Save Note" %>
       <%end%>
     <%else%>
       <%=form_for(Note.new) do |f|%>
-        <%=f.text_area :content %>
+        <%=f.text_area :content, cols: 40, rows: 5 %>
         <%=f.hidden_field :user_id, value: current_user.id %>
         <%=f.hidden_field :post_id, value: @post.id %><br>
         <%=f.submit "Save Note" %>

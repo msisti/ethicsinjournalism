@@ -16,6 +16,10 @@ class AssignmentsController < ApplicationController
     @assignment = Assignment.new
     # 1.times { @assignment.positions.build}
     @assignment.comment_forms.build
+
+    @all_comment_forms = CommentForm.all
+    # params[assignment:[:comment_forms]]
+    # params[:comment_forms]
     # 1.times { @assignment.comment_forms.build }
 
   end
@@ -26,6 +30,7 @@ class AssignmentsController < ApplicationController
 
   # GET /assignments/1/edit
   def edit
+    @all_comment_forms = CommentForm.all
   end
 
   # POST /assignments
