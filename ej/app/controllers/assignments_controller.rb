@@ -17,11 +17,22 @@ class AssignmentsController < ApplicationController
     # 1.times { @assignment.positions.build}
     @assignment.comment_forms.build
 
-    @all_comment_forms = CommentForm.all
-    # params[assignment:[:comment_forms]]
-    # params[:comment_forms]
-    # 1.times { @assignment.comment_forms.build }
-
+    @comment_forms_for_drop = []
+    @form_hash = {}
+    CommentForm.all.order(:name).each do |form|
+      if !form.question1.empty?
+        @comment_forms_for_drop << form
+        # @form_hash[form.name] = [form]
+        # if (@form_hash[form.name].length > 1)
+        #   i = 0
+        #   while i < @form[form.name].length - 1
+        #     if @form[form.name][i].question1 == @form[form.name][i+1].question1
+        #
+        #     end
+        #   end
+        # end
+      end
+    end
   end
 
   def is2group=(some_value)
@@ -30,7 +41,12 @@ class AssignmentsController < ApplicationController
 
   # GET /assignments/1/edit
   def edit
-    @all_comment_forms = CommentForm.all
+    @comment_forms_for_drop = []
+    CommentForm.all.order(:name).each do |form|
+      if !form.question1.empty?
+        @comment_forms_for_drop << form
+      end
+    end
   end
 
   # POST /assignments
