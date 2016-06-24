@@ -21,9 +21,10 @@
     <% if current_user %>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <!-- <li><%= link_to 'Photojournalism', photojour_path %></li> -->
         <% if !current_user.admin %>
           <li><%= link_to 'My Posts', posts_myposts_path %></li>
+        <% else %>
+          <li><a href="https://docs.google.com/document/d/1ebBW4cJSckHhkcDxeoYJ2cYQM3uVsljaqBDp2PBy2-s/edit?usp=sharing">User Manual</a></li>
         <% end %>
       </ul>
       <ul class="nav navbar-nav navbar-right">
