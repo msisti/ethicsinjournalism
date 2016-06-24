@@ -3,28 +3,22 @@
 
 <script type="text/javascript">
 
-function showComment(linkID, divID) {
-  if ($(divID).css('display') == 'none') {
-    jQuery(divID).css('display','inline-block');
-  } else {
-    jQuery(divID).css('display','none');
+  function showComment(linkID, divID) {
+    if ($(divID).css('display') == 'none') {
+      jQuery(divID).css('display','inline-block');
+    } else {
+      jQuery(divID).css('display','none');
+    }
   }
-}
 
-function expandAll() {
-  $(".toggle-able").css('display', 'inline-block');
-}
+  function expandAll() {
+    $(".toggle-able").css('display', 'inline-block');
+  }
 
-function collapseAll() {
-  $(".toggle-able").css('display', 'none');
-}
+  function collapseAll() {
+    $(".toggle-able").css('display', 'none');
+  }
 
-$(function() {
-  $( "#resizable" ).resizable({
-    minHeight: 70,
-    minWidth: 100
-  });
-});
 </script>
 
 
@@ -38,7 +32,7 @@ $(function() {
   <div class="col-md-9" id="mainPost" data-target="#myScrollspy">
     <br>
     <h4 id="firstDraft">First Draft</h4>
-    <div id="resizable" class="well well-lg ui-widget-content" style="resize: both; overflow: hidden;">
+    <div id="resizable" class="well well-lg ui-widget-content" style="height: 300px; resize: both; overflow-y:auto; max-width: 95%;">
       <%= @post.draft1.html_safe %>
     </div>
 

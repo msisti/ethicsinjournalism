@@ -92,7 +92,7 @@
   <% if !@post.submitted %>
   <h5>Save changes before submitting!</h5>
     <div class="actions">
-      <%= f.submit 'Submit Post To Class'%>
+      <%= f.submit 'Submit Post To Class', data: { confirm: 'You will not be able to edit your first draft after submitting it. Are you sure you want to submit?' }%>
     </div>
     <% else %>
     <h5>This post has been submitted to the class.</h5>
@@ -124,6 +124,7 @@
  </td>
  <td>
    <% if @post.submitted %>
+   <!-- sidebar containing student's notes on other posts for given assignment, as well as the comments left on their first draft -->
    <div>
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
