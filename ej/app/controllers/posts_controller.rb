@@ -6,6 +6,16 @@ class PostsController < ApplicationController
   def index
     @assignment = Assignment.find(params[:assignment_id])
     @posts = Post.where(assignment_id: @assignment.id)
+    if Time.now > @assignment.final_deadline #final deadline has passed
+      @posts.each do |p|
+        if p.draft2.nil? # student did not submit a final draft
+          if !p.draft1.nil? && p.draft1.length > 0 # student never pressed submit - we must update submit to display the post
+            p.submitted = true
+            p.save
+          end
+        end
+      end
+    end
     if @assignment.is2group
       @twoGroupCount = @assignment.twoGroupCount(@assignment)
     end
@@ -77,6 +87,11 @@ class PostsController < ApplicationController
       @post.submitted = true
       #@post.draft2 = @post.draft1
       @post.draft2 = ""
+    elsif params[:commit] == 'Save Post'
+      if @post.draft1.nil?
+        @post.draft1 = ""
+        @post.submitted = true
+      end
     else
       @post.submitted = false
     end

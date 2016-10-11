@@ -18,9 +18,11 @@
             <%= post.position.title %>
             <% end %>-->&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<%= if post.submitted then 'Submitted' end %>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<%= link_to 'Go to Post', post, class:'btn btn-default btn-sm' %></h4>
           <h4>First Draft</h4>
-          <div class="well well-lg">
-            <%= post.draft1.html_safe %>
-          </div>
+          <% if !post.draft1.nil? %>
+            <div class="well well-lg">
+              <%= post.draft1.html_safe %>
+            </div>
+          <% end %>
           <% if post.draft2 != nil && post.draft2.length > 0 %>
             <h4>Final Draft</h4>
             <div class="well well-lg">

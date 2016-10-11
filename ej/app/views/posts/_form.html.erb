@@ -37,43 +37,35 @@
   <%= f.label :headline %>
   <%= f.text_field :headline %><br>
 
-  <!-- Don't need this anymore, no positions will be used!
-    <% if @assignment.positions.count == 1 %>
-      <%=f.hidden_field :position_id, value: @assignment.positions.first %>
-      <% elsif @assignment.positions.count == 0 %>
-     <h5>No positions for this assignment</h5>
-    <% else %>
-      <% if !@post.submitted %>
-        <h4>Choose a position:</h4>
-        <%= f.select :position_id, @assignment.positions.all.collect {|p| [p.title, p.id]}%>
-      <% else %>
-        <h4>Your position is: <%= @post.position.title%></h4>
-      <% end %>
-    <% end %>
-    -->
-
   <br>
   <br>
 
-  <% if @post.submitted %>
+  <% if @post.submitted %> <!-- student has already submitted their final draft -->
     <div class="well well-lg">
-      <%= @post.draft1.html_safe %>
+      <% if @post.draft1.nil? || @post.draft1.length == 0 %> <!-- student never submitted a first drtaft -->
+        <h4>No first draft submitted.</h4>
+      <% else %>
+        <%= @post.draft1.html_safe %>
+      <% end %>
     </div>
   <% else %>
-    <% if Time.zone.now < @assignment.draft_deadline %>
+
+    <% if Time.zone.now < @assignment.draft_deadline %> <!-- deadline has not passed, allow user to write first draft -->
       <%= f.label :draft1 %>
       <%= f.cktext_area :draft1 %><br>
     <% else %>
-      <% @post.submitted = true %>
+
       <% if @post.draft2 == nil %>
-        <!-- <% @post.draft2 = @post.draft1 %> -->
         <% @post.draft2 = "" %>
       <% end %>
+
       <div class="well well-lg">
         <% if @post.draft1.nil? %>
-        <h3>No Draft Submitted</h3>
+          <h4>No first draft submitted.</h4>
+          <% @post.draft1 = "" %>
+          <% @post.submitted = true %> <!-- this allows the final draft textbox to appear -->
         <% else %>
-        <%= @post.draft1.html_safe %>
+          <%= @post.draft1.html_safe %>
         <% end %>
       </div>
     <% end %>
@@ -101,7 +93,7 @@
  <br>
  <div class="alert alert-warning" role="alert">
   <% if Time.zone.now > @post.assignment.draft_deadline %>
-    <h5>Draft Deadline has passed</h5>
+    <h5>First Draft Deadline has passed</h5>
   <% elsif !@post.submitted %>
     <%= "Time Until Draft Deadline: " + Time.diff(Time.zone.now, @post.assignment.draft_deadline)[:diff] + "\n" %>
     <br>

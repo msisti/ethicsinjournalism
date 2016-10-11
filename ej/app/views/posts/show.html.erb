@@ -33,7 +33,11 @@
     <br>
     <h4 id="firstDraft">First Draft</h4>
     <div id="resizable" class="well well-lg ui-widget-content" style="height: 300px; resize: both; overflow-y:auto; max-width: 95%;">
-      <%= @post.draft1.html_safe %>
+      <% if @post.draft1.nil? || @post.draft1.length == 0 %>
+        <h4>No first draft submitted.</h4>
+      <% else %>
+        <%= @post.draft1.html_safe %>
+      <% end %>
     </div>
 
     <div class="row">
@@ -59,7 +63,12 @@
                 Commenter: <%=c.user.name%><br>
                 <button id="<%='expand' + index.to_s %>" onclick="showComment(this.id, <%='more'+index.to_s %>)" class="btn btn-default btn-xs">
                   Expand/Collapse
-                </button>
+                </button><br><br>
+                <% if current_user.admin %>
+                  <% if current_user.id == c.user.id %>
+                    <%= link_to 'Delete Comment', c, method: :delete, data: { confirm: 'Are you sure?' }, class:'btn btn-danger btn-xs' %>
+                  <% end %>
+                <% end %>
               </div>
               <div class="toggle-able col-md-8" id="<%='more'+index.to_s %>" style="display: none; word-wrap: break-word; border: 3px solid #fff; padding: 20px;">
                 <b><%= @form.question1 %></b>
