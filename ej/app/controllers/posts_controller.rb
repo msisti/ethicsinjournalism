@@ -6,7 +6,7 @@ class PostsController < ApplicationController
   def index
     @assignment = Assignment.find(params[:assignment_id])
     @posts = Post.where(assignment_id: @assignment.id)
-    if Time.now > @assignment.final_deadline #final deadline has passed
+    if Time.zone.now > @assignment.final_deadline #final deadline has passed
       @posts.each do |p|
         if p.draft2.nil? # student did not submit a final draft
           if !p.draft1.nil? && p.draft1.length > 0 # student never pressed submit - we must update submit to display the post
