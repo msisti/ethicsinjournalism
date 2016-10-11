@@ -7,9 +7,10 @@ class PostsController < ApplicationController
     @assignment = Assignment.find(params[:assignment_id])
     @posts = Post.where(assignment_id: @assignment.id)
     if Time.zone.now > @assignment.final_deadline #final deadline has passed
+      # this loop finds and updates posts that should have been submitted but student never did/never wrote final draft which would have submitted it
       @posts.each do |p|
-        if p.draft2.nil? # student did not submit a final draft
-          if !p.draft1.nil? && p.draft1.length > 0 # student never pressed submit - we must update submit to display the post
+        if p.draft2.nil? # student did not submit a final draft, otherwise the post would be submitted!
+          if !p.draft1.nil? && p.draft1.length > 0 # student never pressed submit but started a first draft - we must update submit to display the post
             p.submitted = true
             p.save
           end
@@ -75,6 +76,12 @@ class PostsController < ApplicationController
       end
     end
 
+    # ensures that post is submitted to class in case they never submitted their working first draft
+    if Time.zone.now > @assignment.draft_deadline
+      @post.submitted = true
+      @post.save
+    end
+
     ahoy.track "Edited Post", post_id: @post.id
   end
 
@@ -89,6 +96,7 @@ class PostsController < ApplicationController
       @post.draft2 = ""
     elsif params[:commit] == 'Save Post'
       if @post.draft1.nil?
+        # draft1 is nil if student missed the first draft deadline
         @post.draft1 = ""
         @post.submitted = true
       end
